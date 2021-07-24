@@ -1,4 +1,4 @@
-package com.ray650128.mybasemodule.utils
+package com.ray650128.mybasemodule.util
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.animation.*
 import com.ray650128.mybasemodule.common.R
 
-object AnimUtils {
+object AnimUtil {
 
     enum class AnimType {
         LEFT_TO_RIGHT,  // A:向左滑出 B:向左滑入

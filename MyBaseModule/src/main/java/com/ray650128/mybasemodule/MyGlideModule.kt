@@ -1,4 +1,4 @@
-package com.ray650128.mybasemodule.utils
+package com.ray650128.mybasemodule
 
 import android.content.Context
 import com.bumptech.glide.GlideBuilder
