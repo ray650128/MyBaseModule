@@ -72,6 +72,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 hideLoadingDialog()
             }, 5000)
         }
+
+        binding.btnRecyclerViewDemo.setOnClickListener {
+            gotoActivity(ListDemoActivity::class.java)
+        }
     }
 
     /**
