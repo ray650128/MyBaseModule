@@ -6,6 +6,9 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * 支援空資料提示的 RecyclerView
+ */
 public class RecyclerViewEmptySupport extends RecyclerView {
     private View emptyView;
 
@@ -52,6 +55,10 @@ public class RecyclerViewEmptySupport extends RecyclerView {
         emptyObserver.onChanged();
     }
 
+    /**
+     * 設定資料為空時的提示畫面
+     * @param emptyView
+     */
     public void setEmptyView(View emptyView) {
         this.emptyView = emptyView;
     }

@@ -11,6 +11,9 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.ray650128.mybasemodule.R
 
+/**
+ * 讀取提示畫面
+ */
 class ProgressView constructor(context: Context) : Dialog(context, R.style.LightProgressDialog) {
 
     private var animDrawable: AnimationDrawable? = null

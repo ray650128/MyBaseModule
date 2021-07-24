@@ -9,17 +9,24 @@ import android.view.WindowManager
 import kotlin.math.roundToInt
 
 
-class DisplayUtil(private var context: Context) {
+/**
+ * 畫面尺寸相關工具類別。
+ */
+class DensityUtil(private var context: Context) {
 
-    fun spToPx(spValue: Int): Float {
-        val fontScale = context.resources.displayMetrics.scaledDensity
-        return (spValue * fontScale + 0.5f)
+    /**
+     * dp 轉 px
+     * @param dp
+     * @return 轉換後的 px 尺寸
+     */
+    fun dpToPx(dp: Int): Int {
+        return (context.resources.displayMetrics.density * dp).roundToInt()
     }
 
-    fun dpToPx(dps: Int): Int {
-        return (context.resources.displayMetrics.density * dps).roundToInt()
-    }
-
+    /**
+     * 取得螢幕寬度
+     * @return 螢幕寬度(px)
+     */
     fun getScreenWidth(): Int {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
@@ -33,6 +40,10 @@ class DisplayUtil(private var context: Context) {
         }
     }
 
+    /**
+     * 取得螢幕高度
+     * @return 螢幕高度(px)
+     */
     fun getScreenHeight(): Int {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
@@ -46,6 +57,10 @@ class DisplayUtil(private var context: Context) {
         }
     }
 
+    /**
+     * 取得狀態列高度
+     * @return 狀態列高度(px)
+     */
     fun getStatusBarHeight(): Int {
         var result = 0
         val resourceId: Int = context.resources.getIdentifier(
@@ -59,22 +74,15 @@ class DisplayUtil(private var context: Context) {
         return result
     }
 
+    /**
+     * 取得導航列高度
+     * @return 導航列高度(px)
+     */
     fun getNavigationBarHeight(): Int {
         val resources = context.resources
         val resourceId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
         return if (resourceId > 0) {
             resources.getDimensionPixelSize(resourceId)
         } else 0
-    }
-
-    fun getWindowHeight(): Int {
-        val screen = getScreenHeight()
-        val statusBar = getStatusBarHeight()
-        val navBar = getNavigationBarHeight()
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            screen - statusBar - navBar
-        } else {
-            screen
-        }
     }
 }

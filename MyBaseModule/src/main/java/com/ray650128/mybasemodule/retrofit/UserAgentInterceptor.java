@@ -6,7 +6,10 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-/* This interceptor adds a custom User-Agent. */
+
+/**
+ * 自訂 User-Agent 字串。
+ */
 public class UserAgentInterceptor implements Interceptor {
 
     private final String userAgent;
