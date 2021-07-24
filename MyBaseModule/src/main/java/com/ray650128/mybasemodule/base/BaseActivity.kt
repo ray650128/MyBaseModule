@@ -7,7 +7,9 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.annotation.ColorInt
@@ -20,6 +22,7 @@ import androidx.viewbinding.ViewBinding
 import com.ray650128.mybasemodule.databinding.ActivityBaseBinding
 import com.ray650128.mybasemodule.util.TransitionUtil
 import com.ray650128.mybasemodule.view.ProgressView
+import java.lang.reflect.ParameterizedType
 
 
 /**
@@ -31,32 +34,43 @@ import com.ray650128.mybasemodule.view.ProgressView
  *   顯示/隱藏載入中畫面
  *   顯示簡易的訊息對話視窗
  *   跳轉Activity等
+ * 要使用 UI 元件，請使用 binding.<UI元件名稱>。
  * @author Raymond Yang
  */
 @SuppressLint("ClickableViewAccessibility")
 abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     lateinit var baseBinding: ActivityBaseBinding
-    abstract val binding: T
+
+    lateinit var binding: T
 
     private var mProgressView: ProgressView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         baseBinding = ActivityBaseBinding.inflate(layoutInflater)
-        baseBinding.root.setOnClickListener {
-            hideKeyboard(it)
+        baseBinding.root.setOnTouchListener { view, _ ->
+            hideKeyboard(view)
+            false
         }
 
         baseBinding.toolbarTitle.text = title
         setContentView(baseBinding.root)
         setSupportActionBar(baseBinding.toolbar)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        binding.root.setOnTouchListener { view, _ ->
-            hideKeyboard(view)
-            false
+        // 利用反射，呼叫指定 ViewBinding 中的 inflate 方法填充 View
+        val type = javaClass.genericSuperclass
+        if (type is ParameterizedType) {
+            val clazz = type.actualTypeArguments[0] as Class<T>
+            val method = clazz.getMethod("inflate", LayoutInflater::class.java)
+            binding = method.invoke(null, layoutInflater) as T
+            baseBinding.root.addView(
+                binding.root,
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
+            )
         }
+
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onSupportNavigateUp(): Boolean {

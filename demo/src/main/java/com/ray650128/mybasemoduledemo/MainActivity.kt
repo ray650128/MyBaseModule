@@ -10,13 +10,6 @@ import com.ray650128.mybasemodule.base.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    /**
-     * 這裡展示了如何使用 ViewBinding 綁定 layout 文件。
-     */
-    override val binding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(layoutInflater, baseBinding.root, true)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

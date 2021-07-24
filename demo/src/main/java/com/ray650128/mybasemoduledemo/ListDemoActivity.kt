@@ -13,10 +13,6 @@ import com.ray650128.mybasemoduledemo.viewModels.ListDemoViewModel
 
 class ListDemoActivity : BaseActivity<ActivityListDemoBinding>() {
 
-    override val binding : ActivityListDemoBinding by lazy {
-        ActivityListDemoBinding.inflate(layoutInflater, baseBinding.root, true)
-    }
-
     @ViewModelField("Students")
     lateinit var viewModel: ListDemoViewModel
 
