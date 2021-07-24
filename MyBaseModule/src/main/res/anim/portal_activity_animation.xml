@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- android:animation="@anim/item_animation_fall_down”
+定義item運行的動畫（資源）。
+
+android:delay=”15%"
+為每個item動畫添加一個延時，基于item動畫的duration。0%將導致所有item同步運行，100％則讓前一個item的動畫運行完了下一個item才開始動畫。我們這裡使用的是15%，表示item A的動畫運行了15％之後才開始運行B的動畫。
+
+android:animationOrder="normal"
+有三種選擇：normal, reverse 和 random。它可以控制佈局元素運行動畫的順序。Normal是按照佈局的自然順序（ vertical: top to bottom, horizontal: left to right），Reverse跟Normal是相反的，Random則按照隨即的順序。 -->
+<layoutAnimation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:animation="@anim/portal_activity_animate_set"
+    android:delay="0%"
+    android:animationOrder="normal"
+    />
