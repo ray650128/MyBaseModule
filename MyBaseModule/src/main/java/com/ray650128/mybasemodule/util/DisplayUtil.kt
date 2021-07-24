@@ -9,7 +9,7 @@ import android.view.WindowManager
 import kotlin.math.roundToInt
 
 
-class DisplayUtils(private var context: Context) {
+class DisplayUtil(private var context: Context) {
 
     fun spToPx(spValue: Int): Float {
         val fontScale = context.resources.displayMetrics.scaledDensity
@@ -76,29 +76,5 @@ class DisplayUtils(private var context: Context) {
         } else {
             screen
         }
-    }
-}
-
-fun View.setHeight(value: Int) {
-    val lp = layoutParams
-    lp?.let {
-        lp.height = value
-        layoutParams = lp
-    }
-}
-
-fun View.setWidth(value: Int) {
-    val lp = layoutParams
-    lp?.let {
-        lp.width = value
-        layoutParams = lp
-    }
-}
-
-fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
-    val lp = layoutParams
-    if (lp is MarginLayoutParams) {
-        lp.setMargins(left, top, right, bottom)
-        layoutParams = lp
     }
 }
