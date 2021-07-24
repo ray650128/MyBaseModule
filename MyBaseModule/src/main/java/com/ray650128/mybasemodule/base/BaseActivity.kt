@@ -18,7 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
 import com.ray650128.mybasemodule.databinding.ActivityBaseBinding
-import com.ray650128.mybasemodule.util.AnimUtil
+import com.ray650128.mybasemodule.util.TransitionUtil
 import com.ray650128.mybasemodule.view.ProgressView
 
 
@@ -244,7 +244,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         if (closeSelf) {
             finish()
         }
-        AnimUtil.setAnimation(this, AnimUtil.AnimType.LEFT_TO_RIGHT)
+        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
     }
 
     /**
@@ -259,11 +259,11 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                 Intent.FLAG_ACTIVITY_CLEAR_TASK or
                 Intent.FLAG_ACTIVITY_TASK_ON_HOME
         startActivity(intent)
-        AnimUtil.setAnimation(this, AnimUtil.AnimType.LEFT_TO_RIGHT)
+        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
     }
 
     override fun finish() {
         super.finish()
-        AnimUtil.setAnimation(this, AnimUtil.AnimType.RIGHT_TO_LEFT)
+        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.RIGHT_TO_LEFT)
     }
 }

@@ -6,18 +6,9 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.animation.*
-import com.ray650128.mybasemodule.common.R
+import com.ray650128.mybasemodule.R
 
-object AnimUtil {
-
-    enum class AnimType {
-        LEFT_TO_RIGHT,  // A:向左滑出 B:向左滑入
-        RIGHT_TO_LEFT,  // A:向右滑出 B:向左滑入
-        BOTTOM_TO_UP,
-        UP_TO_BOTTOM,
-        FADE_IN_OUT,    // 淡入淡出
-        ROTATION        // 旋轉
-    }
+object AnimationUtil {
 
     fun showWithAlphaAnim(view: View, duration: Long) {
         view.animate()
@@ -101,39 +92,5 @@ object AnimUtil {
         val amSet = AnimationUtils.loadAnimation(view.context, R.anim.pop_up)
         amSet.duration = duration
         view.startAnimation(amSet)
-    }
-
-    // 設定 Activity 轉場動畫
-    fun setAnimation(context: Context, animType: AnimType?) {
-        val activity: Activity = context as Activity
-        when (animType) {
-            AnimType.LEFT_TO_RIGHT -> activity.overridePendingTransition(
-                R.anim.push_left_in,
-                R.anim.push_left_out
-            )
-            AnimType.RIGHT_TO_LEFT -> activity.overridePendingTransition(
-                R.anim.left_to_right,
-                R.anim.right_to_left
-            )
-            AnimType.BOTTOM_TO_UP -> activity.overridePendingTransition(
-                R.anim.bottom_to_up,
-                R.anim.up_to_bottom
-            )
-            AnimType.UP_TO_BOTTOM -> activity.overridePendingTransition(
-                R.anim.up_to_bottom2,
-                R.anim.bottom_to_up2
-            )
-            AnimType.FADE_IN_OUT -> activity.overridePendingTransition(
-                R.anim.fade_in,
-                R.anim.fade_out
-            )
-
-            AnimType.ROTATION -> activity.overridePendingTransition(
-                R.anim.rotatein_out,
-                R.anim.rotateout_in
-            )
-            else -> {
-            }
-        }
     }
 }
