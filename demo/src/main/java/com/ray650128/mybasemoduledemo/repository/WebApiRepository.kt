@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class WebApiRepository {
+object WebApiRepository {
 
     private val allStudents: MutableLiveData<ArrayList<Student>> by lazy {
         MutableLiveData<ArrayList<Student>>()

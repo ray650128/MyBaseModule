@@ -7,16 +7,14 @@ import com.ray650128.mybasemoduledemo.repository.WebApiRepository
 
 class ListDemoViewModel: ViewModel() {
 
-    private val repository = WebApiRepository()
-
     private var student: MutableLiveData<Student> = MutableLiveData()
 
     fun loadStudents(): MutableLiveData<ArrayList<Student>> {
-        return repository.getStudents()
+        return WebApiRepository.getStudents()
     }
 
     fun getStudent(id: Int): MutableLiveData<Student> {
-        student = repository.getStudent(id)
+        student = WebApiRepository.getStudent(id)
         return student
     }
 
