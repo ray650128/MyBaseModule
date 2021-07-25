@@ -1,4 +1,4 @@
-rootProject.name = "MyBaseModule"
+rootProject.name = "MyBaseModuleDemo"
 include ':app'
 
 include ':MyBaseModule'
