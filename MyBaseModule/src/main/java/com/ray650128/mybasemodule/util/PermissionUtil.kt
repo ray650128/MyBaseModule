@@ -36,7 +36,7 @@ object PermissionUtil {
      */
     fun checkPermission(
         context: Activity,
-        vararg permissions: String,
+        permissions: Array<String>,
         @NonNull permissionResultCallback: PermissionResultCallback
     ) {
         mPermissionResult = permissionResultCallback
@@ -80,8 +80,8 @@ object PermissionUtil {
     fun onRequestPermissionsResult(
         context: Activity,
         requestCode: Int,
-        @NonNull permissions: Array<String>,
-        @NonNull grantResults: Array<Int>
+        @NonNull permissions: Array<out String>,
+        @NonNull grantResults: IntArray
     ) {
         // 檢查是否有權限被拒
         var hasPermissionDenied = false
