@@ -6,7 +6,9 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,9 +19,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
 import com.ray650128.mybasemodule.databinding.ActivityBaseBinding
+import com.ray650128.mybasemodule.extensions.setHeight
 import com.ray650128.mybasemodule.util.TransitionUtil
 import com.ray650128.mybasemodule.view.ProgressView
 import java.lang.reflect.ParameterizedType
@@ -54,7 +58,13 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             false
         }
 
-        baseBinding.toolbarTitle.text = title
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            val textTemp = "<font color= '#000' font size='18'>$title</font>"
+            val text = Html.fromHtml(textTemp, HtmlCompat.FROM_HTML_MODE_LEGACY)
+            baseBinding.toolbarTitle.text = text
+        } else {
+            baseBinding.toolbarTitle.text = title
+        }
         setContentView(baseBinding.root)
         setSupportActionBar(baseBinding.toolbar)
 
@@ -124,6 +134,14 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      */
     fun setToolbarTextColor(colors: ColorStateList) {
         baseBinding.toolbarTitle.setTextColor(colors)
+    }
+
+    /**
+     * 設定 Toolbar 的高度
+     * @param height  Toolbar 的高度(像素)
+     */
+    fun setToolbarHeight(height: Int) {
+        baseBinding.toolbar.setHeight(height)
     }
 
     override fun setTitle(title: CharSequence?) {
