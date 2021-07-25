@@ -69,6 +69,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.btnRecyclerViewDemo.setOnClickListener {
             gotoActivity(ListDemoActivity::class.java)
         }
+
+        binding.btnPermissionDemo.setOnClickListener {
+            gotoActivity(PermissionDemoActivity::class.java)
+        }
     }
 
     /**
