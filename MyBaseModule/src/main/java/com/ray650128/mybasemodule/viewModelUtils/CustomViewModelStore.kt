@@ -52,6 +52,29 @@ fun Fragment.bindViewModel() {
     }
 }
 
+/**
+ * 將 ViewModel 與 Service 綁定
+ */
+fun LifecycleService.bindViewModel() {
+    this::class.java.declaredFields.forEach { field ->
+        field.getAnnotation(ViewModelField::class.java)?.also { scope -> // 取得作用域
+            val element = scope.scopeName
+            val store: CustomViewModelStore
+            if (vmStores.keys.contains(element)) { //如果該作用域在快取內，則從快取中取得 ViewModel store
+                store = vmStores[element]!!
+            } else {    // 如果作用域不存在則建立一個新的 ViewModel store
+                store = CustomViewModelStore()
+                vmStores[element] = store
+            }
+            store.bindHost(this)
+            val clazz = field.type as Class<ViewModel>
+            val vm = ViewModelProvider(store, VMFactory()).get(clazz)
+            // ViewModel 給值
+            field.set(this, vm)
+        }
+    }
+}
+
 class CustomViewModelStore : ViewModelStoreOwner {
     private val bindTargets = ArrayList<LifecycleOwner>()
     private var vmStore: ViewModelStore? = null

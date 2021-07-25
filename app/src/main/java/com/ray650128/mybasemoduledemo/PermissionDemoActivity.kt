@@ -32,10 +32,7 @@ class PermissionDemoActivity : BaseActivity<ActivityPermissionDemoBinding>() {
         initRecyclerView()
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-    }
 
-    override fun onResume() {
-        super.onResume()
         PermissionUtil.checkPermission(
             this,
             PERMISSIONS,
