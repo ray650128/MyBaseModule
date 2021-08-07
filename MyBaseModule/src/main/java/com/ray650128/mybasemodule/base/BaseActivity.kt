@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -126,6 +127,14 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      */
     fun setToolbarTextColor(@ColorInt colorInt: Int) {
         baseBinding.toolbarTitle.setTextColor(colorInt)
+    }
+
+    /**
+     * 取得 Toolbar 的標題標籤
+     * @return TextView
+     */
+    fun getToolbarTextLabel(): TextView {
+        return baseBinding.toolbarTitle
     }
 
     /**
