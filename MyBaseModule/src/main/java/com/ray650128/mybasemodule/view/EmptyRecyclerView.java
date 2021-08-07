@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * 支援空資料提示的 RecyclerView
  */
-public class RecyclerViewEmptySupport extends RecyclerView {
+public class EmptyRecyclerView extends RecyclerView {
     private View emptyView;
 
     private RecyclerView.AdapterDataObserver emptyObserver = new AdapterDataObserver() {
@@ -19,28 +19,28 @@ public class RecyclerViewEmptySupport extends RecyclerView {
         public void onChanged() {
             Adapter<?> adapter =  getAdapter();
             if(adapter != null && emptyView != null) {
-                if(adapter.getItemCount() == 1) {
+                if(adapter.getItemCount() < 1) {
                     emptyView.setVisibility(View.VISIBLE);
-                    RecyclerViewEmptySupport.this.setVisibility(View.GONE);
+                    EmptyRecyclerView.this.setVisibility(View.GONE);
                 }
                 else {
                     emptyView.setVisibility(View.GONE);
-                    RecyclerViewEmptySupport.this.setVisibility(View.VISIBLE);
+                    EmptyRecyclerView.this.setVisibility(View.VISIBLE);
                 }
             }
 
         }
     };
 
-    public RecyclerViewEmptySupport(Context context) {
+    public EmptyRecyclerView(Context context) {
         super(context);
     }
 
-    public RecyclerViewEmptySupport(Context context, AttributeSet attrs) {
+    public EmptyRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public RecyclerViewEmptySupport(Context context, AttributeSet attrs, int defStyle) {
+    public EmptyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
