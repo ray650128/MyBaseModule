@@ -75,7 +75,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             gotoActivity(PermissionDemoActivity::class.java)
         }
 
-        //setToolbarTextColor(Color.WHITE)
+        setToolbarTextColor(Color.WHITE)
     }
 
     /**

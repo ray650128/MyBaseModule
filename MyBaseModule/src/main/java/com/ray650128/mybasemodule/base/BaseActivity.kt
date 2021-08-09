@@ -125,7 +125,7 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      * 設定 Toolbar 的文字色彩
      * @param colorInt  Toolbar 的文字色彩
      */
-    fun setToolbarTextColor(colorInt: Int) {
+    fun setToolbarTextColor(@ColorInt colorInt: Int) {
         baseBinding.toolbarTitle.setTextColor(colorInt)
     }
 
