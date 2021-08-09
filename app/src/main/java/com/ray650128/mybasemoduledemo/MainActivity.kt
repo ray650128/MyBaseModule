@@ -1,5 +1,6 @@
 package com.ray650128.mybasemoduledemo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -73,6 +74,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         binding.btnPermissionDemo.setOnClickListener {
             gotoActivity(PermissionDemoActivity::class.java)
         }
+
+        //setToolbarTextColor(Color.WHITE)
     }
 
     /**

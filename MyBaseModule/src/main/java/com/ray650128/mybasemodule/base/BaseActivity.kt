@@ -59,13 +59,13 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             false
         }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             val textTemp = "<font color= '#000' font size='18'>$title</font>"
             val text = Html.fromHtml(textTemp, HtmlCompat.FROM_HTML_MODE_LEGACY)
             baseBinding.toolbarTitle.text = text
-        } else {
+        } else {*/
             baseBinding.toolbarTitle.text = title
-        }
+        //}
         setContentView(baseBinding.root)
         setSupportActionBar(baseBinding.toolbar)
 
@@ -125,16 +125,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      * 設定 Toolbar 的文字色彩
      * @param colorInt  Toolbar 的文字色彩
      */
-    fun setToolbarTextColor(@ColorInt colorInt: Int) {
+    fun setToolbarTextColor(colorInt: Int) {
         baseBinding.toolbarTitle.setTextColor(colorInt)
-    }
-
-    /**
-     * 取得 Toolbar 的標題標籤
-     * @return TextView
-     */
-    fun getToolbarTextLabel(): TextView {
-        return baseBinding.toolbarTitle
     }
 
     /**
@@ -143,6 +135,14 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
      */
     fun setToolbarTextColor(colors: ColorStateList) {
         baseBinding.toolbarTitle.setTextColor(colors)
+    }
+
+    /**
+     * 取得 Toolbar 的標題標籤
+     * @return TextView
+     */
+    fun getToolbarTextLabel(): TextView {
+        return baseBinding.toolbarTitle
     }
 
     /**
