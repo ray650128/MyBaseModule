@@ -15,15 +15,6 @@ import kotlin.math.roundToInt
 class DensityUtil(private var context: Context) {
 
     /**
-     * dp 轉 px
-     * @param dp
-     * @return 轉換後的 px 尺寸
-     */
-    fun dpToPx(dp: Int): Int {
-        return (context.resources.displayMetrics.density * dp).roundToInt()
-    }
-
-    /**
      * 取得螢幕寬度
      * @return 螢幕寬度(px)
      */

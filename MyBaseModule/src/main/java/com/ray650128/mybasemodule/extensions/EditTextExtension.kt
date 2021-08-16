@@ -26,34 +26,31 @@ fun EditText.setPlainTextMode() {
  * 判斷 EditText 的 inputType 是否為密碼形式。
  * @return 是否為密碼形式
  */
-fun EditText.isPasswordMode(): Boolean {
-    return (this.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
-}
+val EditText.isPasswordMode: Boolean
+    get() = (this.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD)
 
 /**
  * 在 EditText 的左側加入 icon。
- * @param drawable
  */
-fun EditText.setDrawableStart(drawable: Drawable?) {
-    this.setCompoundDrawablesRelativeWithIntrinsicBounds(drawable, null, null, null)
-}
+var EditText.drawableStart: Drawable?
+    get() = this.compoundDrawables[0]
+    set(value) = this.setCompoundDrawablesRelativeWithIntrinsicBounds(value, null, null, null)
 
 /**
  * 在 EditText 的右側加入 icon。
- * @param drawable
  */
-fun EditText.setDrawableEnd(drawable: Drawable?) {
-    this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, drawable, null)
-}
+var EditText.drawableEnd: Drawable?
+    get() = this.compoundDrawables[2]
+    set(value) = this.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, value, null)
 
 /**
  * 在 EditText 的左右兩側加入 icon。
- * @param drawableLeft
- * @param drawableRight
  */
-fun EditText.setDrawableStartEnd(drawableLeft: Drawable?, drawableRight: Drawable?) {
-    this.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableLeft, null, drawableRight, null)
-}
+var EditText.drawableStartEnd: List<Drawable>?
+    get() = listOf(this.compoundDrawables[0], this.compoundDrawables[2])
+    set(value) = this.setCompoundDrawablesRelativeWithIntrinsicBounds(
+        value?.get(0), null, value?.get(1), null
+    )
 
 /**
  * 在 EditText 的右側 icon 加入點擊事件。

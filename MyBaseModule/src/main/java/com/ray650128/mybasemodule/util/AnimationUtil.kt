@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.animation.*
+import androidx.core.view.isVisible
 import com.ray650128.mybasemodule.R
 
 
@@ -20,15 +21,17 @@ object AnimationUtil {
      * @param duration
      */
     fun fadeIn(view: View, duration: Long) {
+        view.isVisible = true
+        view.alpha = 0.0f
         view.animate()
-                .alpha(1.0f)
-                .setDuration(duration)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        super.onAnimationEnd(animation)
-                        view.visibility = View.VISIBLE
-                    }
-                })
+            .alpha(1.0f)
+            .setDuration(duration)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    view.visibility = View.VISIBLE
+                }
+            })
     }
 
     /**
@@ -37,16 +40,18 @@ object AnimationUtil {
      * @param duration
      */
     fun fadeOut(view: View, duration: Long) {
+        view.isVisible = true
+        view.alpha = 1.0f
         view.animate()
-                .alpha(0.0f)
-                .setDuration(duration)
-                .setListener(object : AnimatorListenerAdapter() {
-                    override fun onAnimationEnd(animation: Animator?) {
-                        super.onAnimationEnd(animation)
-                        view.visibility = View.GONE
-                        view.alpha = 1f
-                    }
-                })
+            .alpha(0.0f)
+            .setDuration(duration)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator?) {
+                    super.onAnimationEnd(animation)
+                    view.isVisible = false
+                    view.alpha = 1f
+                }
+            })
     }
 
     /**

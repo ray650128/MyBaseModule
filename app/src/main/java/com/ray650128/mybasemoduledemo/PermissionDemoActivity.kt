@@ -4,6 +4,8 @@ import android.Manifest
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ray650128.mybasemodule.base.BaseActivity
+import com.ray650128.mybasemodule.extensions.checkPermissions
+import com.ray650128.mybasemodule.extensions.requestPermissionsResult
 import com.ray650128.mybasemodule.util.PermissionUtil
 import com.ray650128.mybasemodule.viewModelUtils.ViewModelField
 import com.ray650128.mybasemodule.viewModelUtils.bindViewModel
@@ -33,22 +35,19 @@ class PermissionDemoActivity : BaseActivity<ActivityPermissionDemoBinding>() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        PermissionUtil.checkPermission(
-            this,
-            PERMISSIONS,
-            object : PermissionUtil.PermissionResultCallback {
-                override fun onGrant() {
-                    viewModel.getSongList(this@PermissionDemoActivity)
-                        .observe(this@PermissionDemoActivity, {
-                            if (it != null) {
-                                songList = it
-                                adapter.updateList(songList)
-                            }
-                        })
-                }
+        checkPermissions(PERMISSIONS, object : PermissionUtil.PermissionResultCallback {
+            override fun onGrant() {
+                viewModel.getSongList(this@PermissionDemoActivity)
+                    .observe(this@PermissionDemoActivity, {
+                        if (it != null) {
+                            songList = it
+                            adapter.updateList(songList)
+                        }
+                    })
+            }
 
-                override fun onDeny(denies: ArrayList<String>?) {}
-            })
+            override fun onDeny(denies: ArrayList<String>?) {}
+        })
     }
 
     override fun onRequestPermissionsResult(
@@ -57,10 +56,7 @@ class PermissionDemoActivity : BaseActivity<ActivityPermissionDemoBinding>() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        PermissionUtil.onRequestPermissionsResult(
-            this, requestCode,
-            permissions, grantResults
-        )
+        requestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun initRecyclerView() {

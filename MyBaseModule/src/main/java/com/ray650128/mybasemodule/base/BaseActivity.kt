@@ -59,13 +59,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             false
         }
 
-        /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            val textTemp = "<font color= '#000' font size='18'>$title</font>"
-            val text = Html.fromHtml(textTemp, HtmlCompat.FROM_HTML_MODE_LEGACY)
-            baseBinding.toolbarTitle.text = text
-        } else {*/
-            baseBinding.toolbarTitle.text = title
-        //}
+        baseBinding.toolbarTitle.text = title
+
         setContentView(baseBinding.root)
         setSupportActionBar(baseBinding.toolbar)
 
