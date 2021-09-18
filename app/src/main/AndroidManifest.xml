@@ -11,17 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyBaseModule">
-        <activity android:name=".MainActivity"
-            android:exported="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.MyBaseModule">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PermissionDemoActivity" />
-        <activity android:name=".StudentActivity" />
-        <activity android:name=".ListDemoActivity" />
+        <activity
+            android:name=".PermissionDemoActivity"
+            android:theme="@style/Theme.MyBaseModule.NoActionBar" />
+        <activity
+            android:name=".StudentActivity"
+            android:theme="@style/Theme.MyBaseModule" />
+        <activity
+            android:name=".ListDemoActivity"
+            android:theme="@style/Theme.MyBaseModule" />
     </application>
 
 </manifest>

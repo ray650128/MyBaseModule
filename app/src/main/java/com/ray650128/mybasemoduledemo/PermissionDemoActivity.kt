@@ -16,6 +16,8 @@ import com.ray650128.mybasemoduledemo.viewModels.PermissionDemoViewModel
 
 class PermissionDemoActivity : BaseActivity<ActivityPermissionDemoBinding>() {
 
+    override val useCustomActionBar: Boolean = true
+
     companion object {
         private val PERMISSIONS = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
     }

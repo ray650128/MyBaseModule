@@ -14,6 +14,8 @@ import com.ray650128.mybasemoduledemo.viewModels.ListDemoViewModel
 
 class StudentActivity : BaseActivity<ActivityStudentBinding>() {
 
+    override val useCustomActionBar: Boolean = false
+
     @ViewModelField("Students")
     lateinit var viewModel: ListDemoViewModel
 

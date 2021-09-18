@@ -51,6 +51,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
 
     private var mProgressView: ProgressView? = null
 
+    abstract val useCustomActionBar: Boolean
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         baseBinding = ActivityBaseBinding.inflate(layoutInflater)
@@ -59,10 +61,17 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
             false
         }
 
-        baseBinding.toolbarTitle.text = title
-
         setContentView(baseBinding.root)
-        setSupportActionBar(baseBinding.toolbar)
+
+        if (useCustomActionBar) {
+            baseBinding.toolbarTitle.text = title
+            setToolbarVisible(true)
+            setSupportActionBar(baseBinding.toolbar)
+
+            supportActionBar?.setDisplayShowTitleEnabled(false)
+        } else {
+            setToolbarVisible(false)
+        }
 
         // 利用反射，呼叫指定 ViewBinding 中的 inflate 方法填充 View
         val type = javaClass.genericSuperclass
@@ -75,8 +84,6 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT
             )
         }
-
-        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     override fun onSupportNavigateUp(): Boolean {

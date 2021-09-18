@@ -11,6 +11,8 @@ import com.ray650128.mybasemodule.base.BaseActivity
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
+    override val useCustomActionBar: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
