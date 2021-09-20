@@ -2,10 +2,11 @@ package com.ray650128.mybasemodule.util
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.Activity
-import android.content.Context
 import android.view.View
-import android.view.animation.*
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
+import android.view.animation.TranslateAnimation
 import androidx.core.view.isVisible
 import com.ray650128.mybasemodule.R
 
@@ -16,9 +17,10 @@ import com.ray650128.mybasemodule.R
 object AnimationUtil {
 
     /**
-     * 顯示淡入動畫。
-     * @param view
-     * @param duration
+     * 播放淡入動畫。
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
     fun fadeIn(view: View, duration: Long) {
         view.isVisible = true
@@ -35,9 +37,10 @@ object AnimationUtil {
     }
 
     /**
-     * 顯示淡出動畫。
-     * @param view
-     * @param duration
+     * 播放淡出動畫。
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
     fun fadeOut(view: View, duration: Long) {
         view.isVisible = true
@@ -55,25 +58,39 @@ object AnimationUtil {
     }
 
     /**
-     * 由下往上滑入。
-     * @param view
-     * @param duration
+     * 播放由下往上滑入動畫。
+     * 注意：使用動畫必須將物件設成 invisible
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
-    fun slideUp(view: View, duration: Long) {
+    fun showWithSlideUpAnim(view: View, duration: Long) {
         view.visibility = View.VISIBLE
-        val animate = TranslateAnimation(0f, 0f, view.height.toFloat(), 0f)
+        val animate = TranslateAnimation(
+            0f,  // fromXDelta
+            0f,  // toXDelta
+            view.height.toFloat(),  // fromYDelta
+            0f
+        ) // toYDelta
+
         animate.duration = duration
         animate.fillAfter = false
         view.startAnimation(animate)
     }
 
     /**
-     * 由上往下滑入。
-     * @param view
-     * @param duration
+     * 播放由上往下滑出動畫。
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
-    fun slideDown(view: View, duration: Long) {
-        val animate = TranslateAnimation(0f, 0f, 0f, view.height.toFloat())
+    fun showWithSlideDownAnim(view: View, duration: Long) {
+        val animate = TranslateAnimation(
+            0f,  // fromXDelta
+            0f,  // toXDelta
+            0f,  // fromYDelta
+            view.height.toFloat()
+        ) // toYDelta
         animate.duration = duration
         animate.fillAfter = false
         view.startAnimation(animate)
@@ -81,7 +98,7 @@ object AnimationUtil {
             override fun onAnimationRepeat(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                view.visibility = View.GONE
+                view.visibility = View.INVISIBLE
             }
 
             override fun onAnimationStart(animation: Animation?) {}
@@ -89,11 +106,13 @@ object AnimationUtil {
     }
 
     /**
-     * 由右往左滑入。
-     * @param view
-     * @param duration
+     * 播放由左側滑入動畫。
+     * 注意：使用動畫必須將物件設成 invisible
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
-    fun slideLeft(view: View, duration: Long) {
+    fun showWithSlideLeftAnim(view: View, duration: Long): Animation {
         view.visibility = View.VISIBLE
         val animate1 = AnimationUtils.loadAnimation(view.context, R.anim.right_to_left)
         val animate2 = AnimationUtils.loadAnimation(view.context, R.anim.fade_out)
@@ -107,16 +126,44 @@ object AnimationUtil {
         }
 
         view.startAnimation(animatorSet)
+        return animatorSet
     }
 
     /**
-     * Popup 動畫。
-     * @param view
-     * @param duration
+     * 播放由右側滑入動畫。
+     * 注意：使用動畫必須將物件設成 invisible
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
      */
-    fun showWithPopupAnim(view: View, duration: Long) {
+    fun showWithSlideRightAnim(view: View, duration: Long): Animation {
+        view.visibility = View.VISIBLE
+        val animate1 = AnimationUtils.loadAnimation(view.context, R.anim.left_to_right)
+        val animate2 = AnimationUtils.loadAnimation(view.context, R.anim.fade_out)
+        animate1.duration = duration
+        animate2.duration = duration
+
+        val animatorSet = AnimationSet(true).apply {
+            fillAfter = true
+            addAnimation(animate1)
+            addAnimation(animate2)
+        }
+
+        view.startAnimation(animatorSet)
+        return animatorSet
+    }
+
+    /**
+     * 播放 PopUp 動畫。
+     * @param   view        指定的 UI 元件
+     * @param   duration    播放時間長度
+     * @return  無
+     */
+    fun showWithPopupAnim(view: View, duration: Long): Animation {
         val amSet = AnimationUtils.loadAnimation(view.context, R.anim.pop_up)
         amSet.duration = duration
+        view.visibility = View.VISIBLE
         view.startAnimation(amSet)
+        return amSet
     }
 }

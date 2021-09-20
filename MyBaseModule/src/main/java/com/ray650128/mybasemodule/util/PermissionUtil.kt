@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
+
 /**
  * 權限工具
  * 用法：

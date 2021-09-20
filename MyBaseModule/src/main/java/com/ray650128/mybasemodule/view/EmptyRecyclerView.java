@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+
 /**
  * 支援空資料提示的 RecyclerView
  */

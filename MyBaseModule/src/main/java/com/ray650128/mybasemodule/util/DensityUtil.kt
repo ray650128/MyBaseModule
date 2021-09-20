@@ -3,10 +3,7 @@ package com.ray650128.mybasemodule.util
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
-import android.view.View
-import android.view.ViewGroup.MarginLayoutParams
 import android.view.WindowManager
-import kotlin.math.roundToInt
 
 
 /**

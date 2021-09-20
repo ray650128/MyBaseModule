@@ -3,6 +3,7 @@ package com.ray650128.mybasemodule.util
 import java.util.*
 import java.util.regex.Pattern
 
+
 /**
  * 字串工具類別。
  */

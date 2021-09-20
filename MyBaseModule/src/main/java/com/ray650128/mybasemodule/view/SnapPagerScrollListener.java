@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 public class SnapPagerScrollListener extends RecyclerView.OnScrollListener {
 
     // Constants

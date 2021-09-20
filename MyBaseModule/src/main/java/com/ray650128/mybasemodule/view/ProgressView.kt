@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import com.ray650128.mybasemodule.R
 
+
 /**
  * 讀取提示畫面
  */
