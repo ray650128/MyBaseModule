@@ -40,55 +40,37 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val d = super.onCreateDialog(savedInstanceState)
-        //view hierarchy is inflated after dialog is shown
         d.setOnShowListener {
-            //this disables outside touch
+            // 停用視窗外側的觸控事件
             d.window?.findViewById<View>(R.id.touch_outside)?.setOnClickListener(null)
-            //this prevents dragging behavior
-            (d.window?.findViewById<View>(R.id.design_bottom_sheet)?.layoutParams as CoordinatorLayout.LayoutParams).behavior = null
+            // 防止拖動
+            val bottomSheet = d.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+            if (bottomSheet != null) {
+                val behavior = BottomSheetBehavior.from(bottomSheet)
+                behavior.isDraggable = false
+            }
         }
         return d
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val type = javaClass.genericSuperclass as ParameterizedType
         val aClass = type.actualTypeArguments[0] as Class<*>
-        val method = aClass.getDeclaredMethod("inflate", LayoutInflater::class.java,ViewGroup::class.java,Boolean::class.java)
-        binding = method.invoke(null,layoutInflater,container,false) as T
+        val method = aClass.getDeclaredMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
+        binding = method.invoke(null, layoutInflater, container, false) as T
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val window = dialog?.window
-        val windowParams = window?.attributes
-        windowParams?.dimAmount = 0.0f
-        window?.attributes = windowParams
 
         val dialog = dialog as BottomSheetDialog?
-        val bottomSheet = dialog!!.delegate.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
+        val bottomSheet = dialog?.delegate?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
         if (bottomSheet != null) {
             val layoutParams = bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
-            val densityUtil = DensityUtil(mContext)
-            layoutParams.height = densityUtil.getScreenHeight() - densityUtil.getNavigationBarHeight() - densityUtil.getStatusBarHeight()
+            layoutParams.height = DensityUtil(mContext).getScreenHeight()
             mDialogBehavior = BottomSheetBehavior.from(bottomSheet)
-            mDialogBehavior?.apply {
-                peekHeight = BottomSheetBehavior.PEEK_HEIGHT_AUTO
-                addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-                    override fun onStateChanged(bottomSheet: View, newState: Int) {
-                        //if (newState == BottomSheetBehavior.STATE_DRAGGING) {
-                        mDialogBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
-                        //}
-                    }
-
-                    override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-                })
-            }
-            // 初始为展开状态
+            mDialogBehavior?.skipCollapsed = true
             mDialogBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
@@ -101,15 +83,17 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
     }
 
     fun hideKeyboard(view: View) {
-        val imm: InputMethodManager = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val imm: InputMethodManager =
+            mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun hideKeyboard(activity: Activity) {
-        val imm: InputMethodManager = mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
+        val imm: InputMethodManager =
+            mContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        // Find the currently focused view, so we can grab the correct window token from it.
         var view: View? = activity.currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        // If no view currently has focus, create a new one, just so we can grab a window token from it
         if (view == null) {
             view = View(activity)
         }
@@ -117,7 +101,10 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showMessageDialog(message: String, buttonEvent: ((dialog: DialogInterface) -> Unit)? = null) {
+    fun showMessageDialog(
+        message: String,
+        buttonEvent: ((dialog: DialogInterface) -> Unit)? = null
+    ) {
         val dialog = AlertDialog.Builder(mContext)
         dialog.setMessage(message)
         dialog.setPositiveButton(android.R.string.ok) { thisDialog, _ ->
