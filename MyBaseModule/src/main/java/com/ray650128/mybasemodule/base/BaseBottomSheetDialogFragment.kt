@@ -18,7 +18,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ray650128.mybasemodule.R
-import com.ray650128.mybasemodule.util.DensityUtil
 import java.lang.reflect.ParameterizedType
 
 
@@ -68,7 +67,7 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
         val bottomSheet = dialog?.delegate?.findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)
         if (bottomSheet != null) {
             val layoutParams = bottomSheet.layoutParams as CoordinatorLayout.LayoutParams
-            layoutParams.height = DensityUtil(mContext).getScreenHeight()
+            layoutParams.height = CoordinatorLayout.LayoutParams.MATCH_PARENT
             mDialogBehavior = BottomSheetBehavior.from(bottomSheet)
             mDialogBehavior?.skipCollapsed = true
             mDialogBehavior?.state = BottomSheetBehavior.STATE_EXPANDED
