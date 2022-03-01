@@ -6,21 +6,20 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.os.Build
+import android.net.Uri
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.text.HtmlCompat
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
 import com.ray650128.mybasemodule.databinding.ActivityBaseBinding
@@ -50,6 +49,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     lateinit var binding: T
 
     private var mProgressView: ProgressView? = null
+
+    private var toast: Toast? = null
 
     abstract val useCustomActionBar: Boolean
 
@@ -261,9 +262,9 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     ) {
         val dialog = AlertDialog.Builder(this)
         dialog.setMessage(msg)
-            dialog.setPositiveButton(android.R.string.ok) { thisDlg, which ->
-                onPositivePress?.invoke(thisDlg, which)
-                thisDlg.dismiss()
+        dialog.setPositiveButton(android.R.string.ok) { thisDlg, which ->
+            onPositivePress?.invoke(thisDlg, which)
+            thisDlg.dismiss()
         }
         if (onNegativePress != null) {
             dialog.setNegativeButton(android.R.string.cancel) { thisDlg, which ->
@@ -275,6 +276,49 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     /**
+     * 顯示訊息泡泡(時間較短)
+     * @param resId  字串資源
+     */
+    fun showToastShort(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較短)
+     * @param msg  字串
+     */
+    fun showToastShort(msg: String) {
+        showToast(msg, Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param resId  字串資源
+     */
+    fun showToastLong(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_LONG)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param msg  字串
+     */
+    fun showToastLong(msg: String) {
+        showToast(msg, Toast.LENGTH_LONG)
+    }
+
+    private fun showToast(msg: String, duration: Int) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = Toast.makeText(this, msg, duration)
+        } else {
+            toast!!.setText(msg)
+            toast!!.duration = duration
+        }
+        toast!!.show()
+    }
+
+    /**
      * 跳轉到其他 Activity
      * @param activity   目標 Activity
      * @param bundle     傳遞的資料
@@ -283,6 +327,21 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     fun <A> gotoActivity(activity: Class<A>, bundle: Bundle? = null, closeSelf: Boolean = false) {
         val intent = Intent(this, activity)
         if (bundle != null) intent.putExtras(bundle)
+        startActivity(intent)
+        if (closeSelf) {
+            finish()
+        }
+        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
+    }
+
+    /**
+     * 跳轉到系統瀏覽 Activity
+     * @param uri        目標 Uri
+     * @param closeSelf  跳轉後是否關閉自己
+     */
+    fun <A> gotoViewerActivity(uri: Uri?, closeSelf: Boolean = false) {
+        if (uri == null) return
+        val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
         if (closeSelf) {
             finish()

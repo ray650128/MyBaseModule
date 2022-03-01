@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.viewbinding.ViewBinding
@@ -31,6 +33,8 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
     lateinit var binding: T
 
     private var mDialogBehavior: BottomSheetBehavior<View>? = null
+
+    private var toast: Toast? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -121,5 +125,48 @@ abstract class BaseBottomSheetDialogFragment<T : ViewBinding> : BottomSheetDialo
             thisDialog.cancel()
         }
         dialog.show()
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較短)
+     * @param resId  字串資源
+     */
+    fun showToastShort(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較短)
+     * @param msg  字串
+     */
+    fun showToastShort(msg: String) {
+        showToast(msg, Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param resId  字串資源
+     */
+    fun showToastLong(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_LONG)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param msg  字串
+     */
+    fun showToastLong(msg: String) {
+        showToast(msg, Toast.LENGTH_LONG)
+    }
+
+    private fun showToast(msg: String, duration: Int) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = Toast.makeText(requireActivity(), msg, duration)
+        } else {
+            toast!!.setText(msg)
+            toast!!.duration = duration
+        }
+        toast!!.show()
     }
 }

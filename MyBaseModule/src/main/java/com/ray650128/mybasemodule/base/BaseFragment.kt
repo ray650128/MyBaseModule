@@ -3,12 +3,14 @@ package com.ray650128.mybasemodule.base
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -31,6 +33,8 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     private lateinit var mContext: Context
 
     private var mProgressView: ProgressView? = null
+
+    private var toast: Toast? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -136,6 +140,49 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
     }
 
     /**
+     * 顯示訊息泡泡(時間較短)
+     * @param resId  字串資源
+     */
+    fun showToastShort(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較短)
+     * @param msg  字串
+     */
+    fun showToastShort(msg: String) {
+        showToast(msg, Toast.LENGTH_SHORT)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param resId  字串資源
+     */
+    fun showToastLong(@StringRes resId: Int) {
+        showToast(getString(resId), Toast.LENGTH_LONG)
+    }
+
+    /**
+     * 顯示訊息泡泡(時間較長)
+     * @param msg  字串
+     */
+    fun showToastLong(msg: String) {
+        showToast(msg, Toast.LENGTH_LONG)
+    }
+
+    private fun showToast(msg: String, duration: Int) {
+        if (toast == null) {
+            //如果還沒有用過makeText方法，才使用
+            toast = Toast.makeText(requireActivity(), msg, duration)
+        } else {
+            toast!!.setText(msg)
+            toast!!.duration = duration
+        }
+        toast!!.show()
+    }
+
+    /**
      * 跳轉到其他 Activity
      * @param activity   目標 Activity
      * @param bundle     傳遞的資料
@@ -146,6 +193,20 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
         if (bundle != null) intent.putExtras(bundle)
         startActivity(intent)
         startAnimation()
+        if (closeSelf) {
+            requireActivity().finish()
+        }
+    }
+
+    /**
+     * 跳轉到系統瀏覽 Activity
+     * @param uri        目標 Uri
+     * @param closeSelf  跳轉後是否關閉自己
+     */
+    fun <A> gotoViewerActivity(uri: Uri?, closeSelf: Boolean = false) {
+        if (uri == null) return
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(intent)
         if (closeSelf) {
             requireActivity().finish()
         }
