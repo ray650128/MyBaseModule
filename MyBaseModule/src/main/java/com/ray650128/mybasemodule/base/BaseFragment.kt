@@ -203,7 +203,7 @@ abstract class BaseFragment<T : ViewBinding> : Fragment() {
      * @param uri        目標 Uri
      * @param closeSelf  跳轉後是否關閉自己
      */
-    fun <A> gotoViewerActivity(uri: Uri?, closeSelf: Boolean = false) {
+    fun gotoViewerActivity(uri: Uri?, closeSelf: Boolean = false) {
         if (uri == null) return
         val intent = Intent(Intent.ACTION_VIEW, uri)
         startActivity(intent)
