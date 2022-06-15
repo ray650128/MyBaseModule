@@ -7,6 +7,17 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.EditText
 
+/**
+ * 將 EditText 的文字轉成字串。
+ */
+fun EditText.getString(): String {
+    val text = this.text.toString()
+    return if (text.isNotEmpty() && text.last() == ' ') {
+        text.dropLast(1)
+    } else {
+        text
+    }
+}
 
 /**
  * 將 EditText 的 inputType 改為密碼形式。

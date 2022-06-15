@@ -146,3 +146,15 @@ val String.isNegativeFloat: Boolean
         val m = p.matcher(this)
         return m.matches()
     }
+
+fun String.formatToMacAddress(): String {
+    return if (this.contains(":")) {
+        this
+    } else {
+        var macAddress = ""
+        for (i in (this.indices) step 2) {
+            macAddress += this.substring(i, i + 2) + if (i != 10) ":" else ""
+        }
+        macAddress
+    }
+}

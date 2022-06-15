@@ -8,6 +8,8 @@ import android.view.Menu
 import android.view.MenuItem
 import com.ray650128.mybasemoduledemo.databinding.ActivityMainBinding
 import com.ray650128.mybasemodule.base.BaseActivity
+import com.ray650128.mybasemodule.extensions.gotoActivity
+import com.ray650128.mybasemodule.extensions.showMessageDialog
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 

@@ -3,6 +3,7 @@ package com.ray650128.mybasemoduledemo
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ray650128.mybasemodule.base.BaseActivity
+import com.ray650128.mybasemodule.extensions.gotoActivity
 import com.ray650128.mybasemodule.viewModelUtils.ViewModelField
 import com.ray650128.mybasemodule.viewModelUtils.bindViewModel
 import com.ray650128.mybasemoduledemo.adapter.DemoListAdapter
@@ -32,13 +33,18 @@ class ListDemoActivity : BaseActivity<ActivityListDemoBinding>() {
 
         showLoadingDialog()
 
-        viewModel.loadStudents().observe(this, { students ->
+        viewModel.loadStudents().observe(this) { students ->
             if (students != null) {
                 studentList = students
                 adapter.updateList(studentList)
             }
             hideLoadingDialog()
-        })
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
     private fun initRecyclerView() {

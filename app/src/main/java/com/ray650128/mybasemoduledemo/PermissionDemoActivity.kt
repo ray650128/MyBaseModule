@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ray650128.mybasemodule.base.BaseActivity
 import com.ray650128.mybasemodule.extensions.checkPermissions
 import com.ray650128.mybasemodule.extensions.requestPermissionsResult
+import com.ray650128.mybasemodule.extensions.showMessageDialog
 import com.ray650128.mybasemodule.util.PermissionUtil
 import com.ray650128.mybasemodule.viewModelUtils.ViewModelField
 import com.ray650128.mybasemodule.viewModelUtils.bindViewModel
@@ -40,16 +41,21 @@ class PermissionDemoActivity : BaseActivity<ActivityPermissionDemoBinding>() {
         checkPermissions(PERMISSIONS, object : PermissionUtil.PermissionResultCallback {
             override fun onGrant() {
                 viewModel.getSongList(this@PermissionDemoActivity)
-                    .observe(this@PermissionDemoActivity, {
+                    .observe(this@PermissionDemoActivity) {
                         if (it != null) {
                             songList = it
                             adapter.updateList(songList)
                         }
-                    })
+                    }
             }
 
             override fun onDeny(denies: ArrayList<String>?) {}
         })
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
     override fun onRequestPermissionsResult(

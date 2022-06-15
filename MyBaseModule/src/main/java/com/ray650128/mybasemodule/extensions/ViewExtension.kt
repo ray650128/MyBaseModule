@@ -2,6 +2,7 @@ package com.ray650128.mybasemodule.extensions
 
 import android.view.View
 import android.view.ViewGroup
+import com.ray650128.mybasemodule.base.SafeClickListener
 
 
 /**
@@ -41,4 +42,11 @@ fun View.setMargins(left: Int, top: Int, right: Int, bottom: Int) {
         lp.setMargins(left, top, right, bottom)
         layoutParams = lp
     }
+}
+
+fun View.setSafeOnClickListener(onSafeClick: (View) -> Unit) {
+    val safeClickListener = SafeClickListener {
+        onSafeClick(it)
+    }
+    setOnClickListener(safeClickListener)
 }

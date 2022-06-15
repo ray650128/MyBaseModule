@@ -1,28 +1,22 @@
 package com.ray650128.mybasemodule.base
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
+import android.view.MotionEvent
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.viewbinding.ViewBinding
 import com.ray650128.mybasemodule.databinding.ActivityBaseBinding
+import com.ray650128.mybasemodule.extensions.hideKeyboard
 import com.ray650128.mybasemodule.extensions.setHeight
 import com.ray650128.mybasemodule.util.TransitionUtil
 import com.ray650128.mybasemodule.view.ProgressView
@@ -57,11 +51,6 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         baseBinding = ActivityBaseBinding.inflate(layoutInflater)
-        baseBinding.root.setOnTouchListener { view, _ ->
-            hideKeyboard(view)
-            false
-        }
-
         setContentView(baseBinding.root)
 
         if (useCustomActionBar) {
@@ -87,9 +76,11 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            hideKeyboard(currentFocus!!)
+        }
+        return super.dispatchTouchEvent(ev)
     }
 
     /**
@@ -167,44 +158,6 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
     }
 
     /**
-     * 顯示虛擬鍵盤
-     * @param view  鍵盤的焦點
-     */
-    fun showKeyboard(view: EditText?) {
-        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        view?.requestFocus()
-        imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
-        view?.isCursorVisible = true
-    }
-
-    /**
-     * 隱藏虛擬鍵盤
-     * @param view
-     */
-    fun hideKeyboard(view: View) {
-        val imm: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    /**
-     * 隱藏虛擬鍵盤
-     * @param activity
-     */
-    fun hideKeyboard(activity: Activity) {
-        val imm: InputMethodManager =
-            getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        //Find the currently focused view, so we can grab the correct window token from it.
-        var view: View? = activity.currentFocus
-        //If no view currently has focus, create a new one, just so we can grab a window token from it
-        if (view == null) {
-            view = View(activity)
-        }
-        activity.getSystemService(Activity.INPUT_METHOD_SERVICE)
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-    }
-
-    /**
      * 顯示載入畫面
      */
     fun showLoadingDialog() {
@@ -221,58 +174,6 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         if (mProgressView != null && mProgressView!!.isShowing) {
             mProgressView?.hideLoading()
         }
-    }
-
-    /**
-     * 顯示訊息對話框
-     * @param resId  字串資源
-     * @param onPositivePress  按下確定時的動作，預設 null=按下後關閉
-     * @param onNegativePress  按下取消時的動作，預設 null=不顯示
-     */
-    fun showMessageDialog(
-        @StringRes resId: Int,
-        onPositivePress: ((dlg: DialogInterface, which: Int) -> Unit)? = null,
-        onNegativePress: ((dlg: DialogInterface, which: Int) -> Unit)? = null
-    ) {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setMessage(resId)
-        dialog.setPositiveButton(android.R.string.ok) { thisDlg, which ->
-            onPositivePress?.invoke(thisDlg, which)
-            thisDlg.dismiss()
-        }
-        if (onNegativePress != null) {
-            dialog.setNegativeButton(android.R.string.cancel) { thisDlg, which ->
-                onNegativePress.invoke(thisDlg, which)
-                thisDlg.dismiss()
-            }
-        }
-        dialog.show()
-    }
-
-    /**
-     * 顯示訊息對話框
-     * @param msg  字串
-     * @param onPositivePress  按下確定時的動作，預設 null=按下後關閉
-     * @param onNegativePress  按下取消時的動作，預設 null=不顯示
-     */
-    fun showMessageDialog(
-        msg: String,
-        onPositivePress: ((dlg: DialogInterface, which: Int) -> Unit)? = null,
-        onNegativePress: ((dlg: DialogInterface, which: Int) -> Unit)? = null
-    ) {
-        val dialog = AlertDialog.Builder(this)
-        dialog.setMessage(msg)
-        dialog.setPositiveButton(android.R.string.ok) { thisDlg, which ->
-            onPositivePress?.invoke(thisDlg, which)
-            thisDlg.dismiss()
-        }
-        if (onNegativePress != null) {
-            dialog.setNegativeButton(android.R.string.cancel) { thisDlg, which ->
-                onNegativePress.invoke(thisDlg, which)
-                thisDlg.dismiss()
-            }
-        }
-        dialog.show()
     }
 
     /**
@@ -318,49 +219,8 @@ abstract class BaseActivity<T : ViewBinding> : AppCompatActivity() {
         toast!!.show()
     }
 
-    /**
-     * 跳轉到其他 Activity
-     * @param activity   目標 Activity
-     * @param bundle     傳遞的資料
-     * @param closeSelf  跳轉後是否關閉自己
-     */
-    fun <A> gotoActivity(activity: Class<A>, bundle: Bundle? = null, closeSelf: Boolean = false) {
-        val intent = Intent(this, activity)
-        if (bundle != null) intent.putExtras(bundle)
-        startActivity(intent)
-        if (closeSelf) {
-            finish()
-        }
-        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
-    }
-
-    /**
-     * 跳轉到系統瀏覽 Activity
-     * @param uri        目標 Uri
-     * @param closeSelf  跳轉後是否關閉自己
-     */
-    fun gotoViewerActivity(uri: Uri?, closeSelf: Boolean = false) {
-        if (uri == null) return
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(intent)
-        if (closeSelf) {
-            finish()
-        }
-        TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
-    }
-
-    /**
-     * 跳轉到其他 Activity，並將所有的 Activity 從任務堆疊中移除
-     * @param activity   目標 Activity
-     * @param bundle     傳遞的資料
-     */
-    fun <A> gotoActivityAndClearStack(activity: Class<A>, bundle: Bundle? = null) {
-        val intent = Intent(this, activity)
-        if (bundle != null) intent.putExtras(bundle)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or
-                Intent.FLAG_ACTIVITY_CLEAR_TASK or
-                Intent.FLAG_ACTIVITY_TASK_ON_HOME
-        startActivity(intent)
+    override fun startActivity(intent: Intent?) {
+        super.startActivity(intent)
         TransitionUtil.setTransitionEffect(this, TransitionUtil.TransitionType.LEFT_TO_RIGHT)
     }
 

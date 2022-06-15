@@ -37,21 +37,26 @@ class StudentActivity : BaseActivity<ActivityStudentBinding>() {
         showLoadingDialog()
 
         if (studentId != null)
-        viewModel.getStudent(studentId).observe(this, { student ->
+        viewModel.getStudent(studentId).observe(this) { student ->
             if (student != null) {
                 binding.textStudentName.text = student.name
                 examList = student.exams
                 adapter.updateList(examList)
 
-                viewModel.getAverage().observe(this, { average ->
+                viewModel.getAverage().observe(this) { average ->
                     if (average != null) {
                         binding.textAverage.text = String.format("%.0f", average)
                     }
                     hideLoadingDialog()
-                })
+                }
             }
             hideLoadingDialog()
-        })
+        }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        finish()
+        return super.onSupportNavigateUp()
     }
 
     private fun initRecyclerView() {
