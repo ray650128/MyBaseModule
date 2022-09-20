@@ -2,7 +2,6 @@ package com.ray650128.mybasemodule.retrofit;
 
 import android.util.Log;
 
-import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 
